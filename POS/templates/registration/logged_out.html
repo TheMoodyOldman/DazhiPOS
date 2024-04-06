@@ -1,0 +1,20 @@
+{% extends "../base.html" %}
+
+{% block title %} | 您已登出！{% endblock %}
+
+{% block top_link %}{% url 'home' %}{% endblock %}
+{% block top_message %}回前頁{% endblock %}
+
+{% block content %} 
+<div class="container">
+    <div class="row">
+        <div class="col">
+        <br>
+        <h1 class="display-4"><i class="fas fa-light fa-user-lock"></i> 您已登出！</h1>
+        <br>
+        <a class="btn btn-primary btn-lg"  href="{% url 'login'%}">請按此處重新登入</a>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

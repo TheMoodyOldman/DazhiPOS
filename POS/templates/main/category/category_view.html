@@ -1,0 +1,68 @@
+{% extends '../../base.html' %}
+
+{% block title %} | 商品一覽{% endblock title %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #ADD8E6;">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          {% for cate in category_objects %}  
+          <a class="nav-link" href="{% url 'c_view' cate.id %}">{{ cate.name }}</a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+    
+  
+<ul>
+    {% comment %} d-flex justify-content-around {% endcomment %}
+    <div class="container"><hr>
+        <div class="col">
+        <h4><strong> 當前類別： {{ category }}</strong></h4>
+        <a class="btn btn-outline-primary btn-lg" href="{% url 'c_update' category.id %}" role="button">更新類別名稱</a>
+        <a class="btn btn-outline-primary btn-lg" href="{% url 'c_del' category.id %}" role="button">刪除此類別</a>
+        </div><hr>
+
+        <table class="table">
+            <thead>
+              <tr>
+                <th>商品圖片</th>
+                <th>商品名稱</th>
+                <th>售價</th>
+                <th>存貨數量</th>
+                <th>未實現訂單</th>
+                <th>下單</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for product in category.product_set.all %}
+              <tr>
+                <td>
+                  <ul class="navbar-nav">
+                  <li class="nav-item img">
+                  {% if product.image %}
+                  <img src="/media/{{ product.image }}">
+                  {% else %}
+                  商品無圖片
+                  {% endif %}
+                  </li>
+                  </ul>
+                </td>
+                <td><a href="{% url 'update' product.id %}">{{ product.name }}</a></td>
+                <td>{{ product.price }}</td>
+                <td>{{ product.stock_quant }}</td>
+                <td>{{ product.ordering }}</td>
+                <td><a href="{% url 'add_to_cart' product.id %}"><i class="fas fa-light fa-shopping-cart"></a></td>
+              </tr>
+              {%  endfor  %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    
+</ul>
+{% endblock content %}

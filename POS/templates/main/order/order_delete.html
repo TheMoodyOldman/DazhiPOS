@@ -1,0 +1,59 @@
+{% extends '../../base.html' %}
+
+{% block title %} | 刪除訂單紀錄{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+            <br>
+            <h1 class="display-4"><i class="fas fa-light fa-trash-alt"></i> 刪除訂單紀錄</h1>
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col">
+                    <h4><strong> 你是否確定要刪除此筆訂單紀錄？</strong></h4>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>商品名稱</th>
+                          <th>下單數量</th>
+                          <th>售價</th>
+                          <th>總價格</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for item in order.orderitem_set.all %}
+                        <tr>
+                          <td>{{ item.product.name }} 【{{ item.product.category }}】</td>
+                          <td>{{ item.amount }}</td>
+                          <td>{{ item.product.price }}</td>
+                          <td>{{ item.sum }}</td>
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="row">
+                    <div class="col">
+                        <h5>出單時間：{{ order.time }}</h4>
+                    </div>
+                    <div class="col">
+                        <h5>負責人：{{ order.owner }}</h4>
+                    </div>
+                    <div class="col">
+                        <h5>訂單總價格：{{ order.sum }}</h4>
+                    </div>
+                </div>
+                
+                <input type="submit" class="btn btn-primary" value="確定">
+                <a class="btn btn-primary" href="{% url 'ordered' %}" role="button">取消</a>
+            </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

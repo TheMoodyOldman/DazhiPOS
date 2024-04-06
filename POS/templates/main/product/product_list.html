@@ -1,0 +1,73 @@
+{% extends '../../base.html' %}
+
+{% block title %} | 在這裡看東西{% endblock title %}
+
+{% block content %}
+
+<ul>
+    
+    <!-- 格線系統Grid System -->
+    <div class="container">
+        <div class="row">
+            {% comment %} <div class="col">
+                <h4><strong> 名稱</strong></h4>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        1
+                    </li>
+                    <li class="nav-item">
+                        2
+                    </li>
+                </ul>
+            </div> {% endcomment %}
+            <div class="col">
+                <h4><strong> 商品名稱</strong></h4>
+                <ul class="navbar-nav">
+                    {% for product in product_list %}
+                        <li class="nav-item">
+                          <a href="{% url 'update' product.id %}">
+                            {{ product.name }}
+                          </a>
+                        </li>
+                    {%  endfor  %}
+                </ul>
+            </div>
+
+            <div class="col">
+                <h4><strong> 成本 / 售價</strong></h4>
+                <ul class="navbar-nav">
+                    {% for product in product_list %}
+                        <li class="nav-item">
+                            {{ product.cost }} / {{ product.price }}
+                        </li>
+                    {%  endfor  %}
+                </ul>
+            </div>
+
+            <div class="col">
+                <h4><strong> 存貨數量</strong></h4>
+                <ul class="navbar-nav">
+                    {% for product in product_list %}
+                        <li class="nav-item">
+                            {{ product.stock_quant }}
+                        </li>
+                    {%  endfor  %}
+                </ul>
+            </div>
+
+            <div class="col">
+                <h4><strong> 上次存貨日期</strong></h4>
+                <ul class="navbar-nav">
+                    {% for product in product_list %}
+                        <li class="nav-item">
+                            {{ product.last_stock }}
+                        </li>
+                    {%  endfor  %}
+                </ul>
+            </div>
+        </div>
+      </div>
+    
+</ul>
+
+{% endblock content %}

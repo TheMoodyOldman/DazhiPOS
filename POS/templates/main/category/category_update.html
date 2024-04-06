@@ -1,0 +1,28 @@
+{% extends '../../base.html' %}
+
+{% block title %} | 更新類別名稱{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+            <br>
+            <h1 class="display-4"><i class="fas fa-light fa-pencil-alt"></i> 類別現名稱： {{ category }}</h1>
+            
+            <br>
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="form-group row">
+                <label for="model" class="col-2 offset-1 col-form-label">新名稱：</label>
+                <div class="col-3">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="請輸入新名稱">
+                </div>
+                </div>
+
+                <input type="submit" class="btn btn-primary" value="更新名稱">
+  
+            </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

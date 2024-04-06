@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>大直高中POS系統{% block title %}{% endblock title %}</title>
+    <!-- icon -->
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/zh/7/7b/DZSHlogo.gif">
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap">
+    <!-- CSS -->
+    <style> body {font-family: 'Noto Sans TC', sans-serif;}</style>
+    <!--  Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+    {% comment %} <script src="https://kit.fontawesome.com/cc4131f672.js" crossorigin="anonymous"></script> {% endcomment %}
+    <style>
+      .img img {
+        max-width: 120px;
+        max-height: 120px;
+    }
+    </style>
+  </head>
+<body>
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    
+
+        <!-- 宣告一個可折疊的按鈕 -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <!-- 導覽列 -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-light fa-home"></i></a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'cate' %}">商品列表</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'create' %}">新增商品</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'c_create' %}">新增類別</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'order' %}">查看當前訂單</a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'ordered' %}">查看所有已實現訂單</a>
+            </li>
+          </ul>
+
+            <div class="ml-auto">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                      {% if user.is_superuser %}
+                        <a class="nav-link" href=" {% url 'home' %} "><i class="fas fa-light fa-address-book"></i>
+                           {{ user.username }}</a>
+                      {% else %}
+                        <a class="nav-link" href=" {% url 'home' %} "><i class="fas fa-light fa-address-book"></i>
+                          {{ user.username }}</a>
+                      {% endif %}
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'logout' %}">登出</a>
+                    </li>
+            {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="/accounts/login/">登入</a>
+                    </li>
+            {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% block content %}
+    
+    {% endblock content %}
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

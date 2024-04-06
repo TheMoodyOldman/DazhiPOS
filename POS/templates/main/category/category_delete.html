@@ -1,0 +1,67 @@
+{% extends '../../base.html' %}
+
+{% block title %} | 刪除類別{% endblock title %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col">
+            <br>
+            <h1 class="display-4"><i class="fas fa-light fa-trash-alt"></i> 刪除類別</h1>
+            {% comment %} <br>
+            <a class="btn btn-primary btn-lg" href="{% url 'd_list'%}" role="button">查看已註冊裝置</a>
+            <br> {% endcomment %}
+            <form method="post" action="">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col">
+                    <h4><strong> 你是否確定要刪除類別 {{ category }}</strong></h4>
+                    </div class="col">
+                </div class="row">
+                <div class="container">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th>商品圖片</th>
+                            <th>商品名稱</th>
+                            <th>售價</th>
+                            <th>存貨數量</th>
+                            <th>未實現訂單</th>
+                            <th>下單</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for product in category.product_set.all %}
+                          <tr>
+                            <td>
+                              <ul class="navbar-nav">
+                              <li class="nav-item img">
+                              {% if product.image %}
+                              <img src="/media/{{ product.image }}">
+                              {% else %}
+                              商品無圖片
+                              {% endif %}
+                              </li>
+                              </ul>
+                            </td>
+                            <td><a href="{% url 'update' product.id %}">{{ product.name }}</a></td>
+                            <td>{{ product.price }}</td>
+                            <td>{{ product.stock_quant }}</td>
+                            <td>{{ product.ordering }}</td>
+                            <td><a href="{% url 'add_to_cart' product.id %}"><i class="fas fa-light fa-shopping-cart"></a></td>
+                          </tr>
+                          {%  endfor  %}
+                        </tbody>
+                      </table>
+                    </div>
+                    
+                </ul>
+                <input type="submit" class="btn btn-primary" value="確定">
+                <a class="btn btn-primary" href="{% url 'cate' %}" role="button">取消</a>
+                {% comment %} <button type="submit" class="btn btn-primary">刪除裝置</button> {% endcomment %}
+                
+            </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
