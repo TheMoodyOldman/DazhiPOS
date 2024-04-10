@@ -21,5 +21,10 @@ pythonanywhere
 帳號：DazhiPOS
 密碼：dazhipos940916
 
+pip install
+PIllow
+openpyxl
+aspose-cells
+
 實用性
 1. 訂單依照時間分類

@@ -6,10 +6,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.http.response import JsonResponse
 from django.utils import timezone
+from django.conf import settings
 
 from .models import Product, Category, Order, OrderItem
 
 from .forms import ProductCartForm
+
+import os, openpyxl, datetime
 
 # Create your views here.
 
@@ -103,7 +106,7 @@ class CategoryUpdate(LoginRequiredMixin, UpdateView):
     fields = ['name']
 
     def get_success_url(self):
-        return reverse_lazy('c_update', args=[self.kwargs['pk']])
+        return reverse_lazy('cate')
 
 class CategoryDelete(LoginRequiredMixin, DeleteView):
     model = Category
@@ -225,3 +228,46 @@ class OrderDelete(LoginRequiredMixin, DeleteView):
     model = Order
     template_name = "main/Order/Order_delete.html"
     success_url = reverse_lazy('ordered')
+
+class OrderToExcel(LoginRequiredMixin, TemplateView):
+
+    template_name = 'main/excel.html'
+
+    def get_context_data(self, **kwargs):
+        order = Order.objects.get(id=self.kwargs['pk'])
+        now = datetime.datetime.now()
+        date = now.strftime("%m_%d_%Y")
+        time = now.strftime("%m%d%Y_%H%M%S")
+        xlsx = 'excel/' + date + '.xlsx'
+
+        if os.path.exists(xlsx):
+            wb = openpyxl.load_workbook(xlsx, data_only=True)
+        else:
+            wb = openpyxl.Workbook() # 開啟新活頁簿
+        
+        wb.create_sheet("工作表"+time)
+        s1 = wb['工作表'+time] 
+        s1['A1'].value = '商品名稱'   
+        s1['B1'].value = '下單數量'    
+        s1['C1'].value = '售價'    
+        s1['D1'].value = '總價格'   
+        s1['E1'].value = '負責人'    
+        s1['F1'].value = '出單時間'  
+
+        s1.column_dimensions['E'].width = 25
+        s1.column_dimensions['F'].width = 25
+
+        row = 2
+        for item in order.orderitem_set.all():
+            s1.cell(row, 1).value = item.product.name
+            s1.cell(row, 2).value = item.amount
+            s1.cell(row, 3).value = item.product.price
+            s1.cell(row, 4).value = item.product.price * item.amount
+            s1.cell(row, 5).value = order.owner.username
+            s1.cell(row, 6).value = order.time
+            row += 1
+
+        wb.save(xlsx)
+
+        return super().get_context_data(**kwargs)
+        

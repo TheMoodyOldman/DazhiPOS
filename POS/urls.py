@@ -24,4 +24,6 @@ urlpatterns = [
     path('cart/order/', OrderCreate.as_view(), name='order'),
     path('ordered/', OrderList.as_view(), name='ordered'),
     path('ordered/delete/<int:pk>', OrderDelete.as_view(), name='del_order'),
+
+    path('ordered/toexcel/<int:pk>', OrderToExcel.as_view(), name='excel')
 ]

@@ -39,18 +39,19 @@
           </div>
           <div class="row">
             <div class="col">
-                <h5>出單時間：<br>{{ order.time }}</h5>
-            </div>
-            <div class="col">
                 <h5>負責人：{{ order.owner }}</h5>
             </div>
             <div class="col">
                 <h5>訂單總價格：{{ order.sum }}</h5>
             </div>
             <div class="col">
-                <h5><a class="btn btn-primary" href="{% url 'del_order' order.id %}" role="button">刪除這筆訂單紀錄</h5></a>
+                <h5><a class="btn btn-primary" href="{% url 'excel' order.id %}" role="button">輸出成excel試算表</h5></a>
             </div>
+            <div class="col">
+              <h5><a class="btn btn-primary" href="{% url 'del_order' order.id %}" role="button">刪除這筆訂單紀錄</h5></a>
+          </div>
         </div>
+        <h5>出單時間：{{ order.time }}</h5>
         <br><br>
         {% endfor %}
     </div>
