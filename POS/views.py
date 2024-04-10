@@ -155,7 +155,7 @@ class AddToCart(LoginRequiredMixin, FormView):
 
 class DeleteCartItem(LoginRequiredMixin, RedirectView):
 
-    def get_redirect_url(self, *args: Any, **kwargs: Any) -> str | None:
+    def get_redirect_url(self, *args: Any, **kwargs: Any):
         idx = self.kwargs['idx']
         product_list = self.request.session.get('product_list', [])
 
