@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 # Create your models here.
 
@@ -17,13 +18,13 @@ class Product(models.Model):
 
     image = models.ImageField("圖片", blank=True, null=True)
 
-    cost = models.IntegerField("成本")
+    cost = models.IntegerField("成本", validators=[MinValueValidator(1)])
 
-    price = models.IntegerField("售價")
+    price = models.IntegerField("售價", validators=[MinValueValidator(1)])
 
-    stock_quant = models.IntegerField("存貨數量")
+    stock_quant = models.IntegerField("存貨數量", validators=[MinValueValidator(1)])
 
-    ordering = models.IntegerField("未實現訂單", default=0)
+    ordering = models.IntegerField("未實現訂單", default=0, validators=[MinValueValidator(1)])
 
     last_stock = models.DateTimeField("上次存貨日期", auto_now_add=True)
 
@@ -35,7 +36,7 @@ class Product(models.Model):
 
 class Order(models.Model):
 
-    sum = models.IntegerField("訂單總價格", default = 0)
+    sum = models.IntegerField("訂單總價格", default = 0, validators=[MinValueValidator(1)])
 
     time = models.DateTimeField("訂單送出時間", auto_now_add=True)
 
@@ -49,9 +50,9 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
 
-    amount = models.IntegerField("商品數量")
+    amount = models.IntegerField("商品數量", validators=[MinValueValidator(1)])
 
-    sum = models.IntegerField("總價格", default=0)
+    sum = models.IntegerField("總價格", default=0, validators=[MinValueValidator(1)])
 
     product = models.ForeignKey(
         Product, models.CASCADE, null=True, verbose_name="對應產品")
