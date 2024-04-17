@@ -79,10 +79,11 @@
             <small class="form-text">請輸入商品的售價</small>
           </div>
         </div>
-
-        <input type="submit" class="btn btn-primary" value="更新商品" />
-        <a class="btn btn-primary" href="{% url 'delete' product.id %}" role="button">刪除商品</a>
-        <a class="btn btn-primary" href="{% url 'stock' product.id %}" role="button">庫存更動</a>
+        
+        <input type="submit" class="btn btn-success" value="更新商品" />
+        <a class="btn btn-danger" href="{% url 'delete' product.id %}" role="button">刪除商品</a>
+        <a class="btn btn-warning" href="{% url 'stock' product.id %}" role="button">庫存更動</a>
+        <a class="btn btn-primary" href="{% url 'cate' %}" role="button">回上一頁</a>
       
       </form>
     </div>

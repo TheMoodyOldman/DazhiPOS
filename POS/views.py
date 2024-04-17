@@ -1,7 +1,7 @@
 from django.forms.forms import BaseForm
 from django.shortcuts import render
 from django.views.generic import *
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.urls import reverse_lazy
 from django.http.response import JsonResponse
 from django.utils import timezone
@@ -12,6 +12,12 @@ from .forms import ProductCartForm
 
 from typing import Any
 import os, openpyxl, datetime
+
+class SuperuserRequiredMixin(AccessMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return self.handle_no_permission()
+        return super().dispatch(request, *args, **kwargs)
 
 # Create your views here.
 
@@ -66,7 +72,7 @@ class ProductStockUpdate(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('update', args=[self.kwargs['pk']])
 
-class ProductDelete(LoginRequiredMixin, DeleteView):
+class ProductDelete(SuperuserRequiredMixin, DeleteView):
     model = Product
     template_name = "main/product/product_delete_comfirm.html"
     success_url = reverse_lazy('cate')
@@ -107,7 +113,7 @@ class CategoryUpdate(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse_lazy('cate')
 
-class CategoryDelete(LoginRequiredMixin, DeleteView):
+class CategoryDelete(SuperuserRequiredMixin, DeleteView):
     model = Category
     template_name = 'main/category/category_delete.html'
     success_url = reverse_lazy('cate')
@@ -152,7 +158,7 @@ class AddToCart(LoginRequiredMixin, FormView):
 
 # class UpdateCartItem(LoginRequiredMixin, FormView):
 
-class DeleteCartItem(LoginRequiredMixin, RedirectView):
+class DeleteCartItem(SuperuserRequiredMixin, RedirectView):
 
     def get_redirect_url(self, *args: Any, **kwargs: Any):
         idx = self.kwargs['idx']
@@ -223,7 +229,7 @@ class OrderList(LoginRequiredMixin, ListView):
     model = Order
     template_name = 'main/order/orders.html'
 
-class OrderDelete(LoginRequiredMixin, DeleteView):
+class OrderDelete(SuperuserRequiredMixin, DeleteView):
     model = Order
     template_name = "main/Order/Order_delete.html"
     success_url = reverse_lazy('ordered')
