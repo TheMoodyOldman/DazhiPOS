@@ -269,7 +269,7 @@ class OrderToExcel(LoginRequiredMixin, TemplateView):
             s1.cell(row, 3).value = item.product.price
             s1.cell(row, 4).value = item.product.price * item.amount
             s1.cell(row, 5).value = order.owner.username
-            s1.cell(row, 6).value = order.time
+            s1.cell(row, 6).value = order.time.strftime("%Y/%m/%d %H:%M:%S")
             row += 1
 
         wb.save(xlsx)
