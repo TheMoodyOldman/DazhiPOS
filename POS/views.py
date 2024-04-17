@@ -1,4 +1,3 @@
-from typing import Any
 from django.forms.forms import BaseForm
 from django.shortcuts import render
 from django.views.generic import *
@@ -9,9 +8,9 @@ from django.utils import timezone
 from django.conf import settings
 
 from .models import Product, Category, Order, OrderItem
-
 from .forms import ProductCartForm
 
+from typing import Any
 import os, openpyxl, datetime
 
 # Create your views here.
