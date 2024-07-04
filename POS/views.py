@@ -85,11 +85,11 @@ class ProductDelete(SuperuserRequiredMixin, DeleteView):
 
     def get_success_url(self):
 
-        image_dir = '../media/' + Product.objects.get(id=self.kwargs['pk']).image.name
+        image_dir = 'media/' + Product.objects.get(id=self.kwargs['pk']).image.name
         try:
             os.remove(image_dir)
-        except OSError as e:
-            print("Image file not exist at " + image_dir + "\nYou better watch out dude!")
+        except OSError:
+            print("Image file not exist at " + image_dir + "\nYou better watch out!")
 
         redir = Product.objects.get(id=self.kwargs['pk']).category.id
 
