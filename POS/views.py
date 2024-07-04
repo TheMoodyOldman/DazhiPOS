@@ -1,9 +1,10 @@
 from django.forms.forms import BaseForm
+from django.http.response import HttpResponse as HttpResponse
 from django.shortcuts import render
 from django.views.generic import *
 from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.urls import reverse_lazy
-from django.http.response import JsonResponse
+from django.http import FileResponse
 from django.utils import timezone
 from django.conf import settings
 
@@ -42,11 +43,17 @@ class ProductCreate(LoginRequiredMixin, CreateView):
     template_name = "main/product/product_create.html"
 
     fields = ['name', 'image', 'cost', 'price', 'stock_quant', 'category']
-    success_url = reverse_lazy('cate')
 
+    redir = -1
     def form_valid(self, form):
         form.instance.order_quant = 0
+        self.redir = form.instance.category.id
         return super().form_valid(form)
+    
+    def get_success_url(self):
+        if self.redir == -1:
+            return reverse_lazy('cate')
+        return '../../category/' + str(self.redir) + '/'
 
 class ProductUpdate(LoginRequiredMixin, UpdateView):
     model = Product
@@ -75,7 +82,18 @@ class ProductStockUpdate(LoginRequiredMixin, UpdateView):
 class ProductDelete(SuperuserRequiredMixin, DeleteView):
     model = Product
     template_name = "main/product/product_delete_comfirm.html"
-    success_url = reverse_lazy('cate')
+
+    def get_success_url(self):
+
+        image_dir = '../media/' + Product.objects.get(id=self.kwargs['pk']).image.name
+        try:
+            os.remove(image_dir)
+        except OSError as e:
+            print("Image file not exist at " + image_dir + "\nYou better watch out dude!")
+
+        redir = Product.objects.get(id=self.kwargs['pk']).category.id
+
+        return reverse_lazy('cate') + str(redir) + '/'
 
 # ========== product ========== #
     
@@ -238,7 +256,7 @@ class OrderToExcel(LoginRequiredMixin, TemplateView):
 
     template_name = 'main/excel.html'
 
-    def get_context_data(self, **kwargs):
+    def render_to_response(self, context, **response_kwargs):
         order = Order.objects.get(id=self.kwargs['pk'])
         now = datetime.datetime.now()
         date = now.strftime("%m_%d_%Y")
@@ -273,6 +291,7 @@ class OrderToExcel(LoginRequiredMixin, TemplateView):
             row += 1
 
         wb.save(xlsx)
-
-        return super().get_context_data(**kwargs)
-        
+        return FileResponse(open(xlsx, "rb"))
+    
+# def download(request):
+#     response = FileResponse()

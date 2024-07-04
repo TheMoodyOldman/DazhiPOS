@@ -4,19 +4,21 @@
 
 {% block content %}
 
-<nav class="navbar navbar-expand-lg bg-body-tertiary" style="background-color: #ADD8E6;">
-    <div class="container-fluid">
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          {% for cate in category_objects %}  
-          <a class="nav-link" href="{% url 'c_view' cate.id %}">{{ cate.name }}</a>
-          {% endfor %}
-        </div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid" style="height: 10%;">
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <h6 style="margin-bottom: 0;">類別索引：</h6>
+      <div class="navbar-nav">
+        {% for cate in category_objects %}  
+        <a class="nav-link" href="{% url 'c_view' cate.id %}">{{ cate.name }}</a>
+        {% endfor %}
       </div>
     </div>
-  </nav>
-
-    
+  </div>
+</nav>
+<hr style="border: 0; margin-top: 0; padding-top: 10px;
+    color: #a0a0a5; border-top: 1px solid rgba(0,0,0,.1);
+    box-shadow: inset 0 15px 15px -15px;">
   
 <ul>
     {% comment %} d-flex justify-content-around {% endcomment %}

@@ -57,7 +57,8 @@
       <form method="post" action="">
         {% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" class="btn btn-primary" value="確認" />
+        <input type="submit" class="btn btn-success" value="確認更動">
+        <a class="btn btn-primary" href="{% url 'update' product.id %}" role="button">放棄更動</a>
       
       </form>
     </div>

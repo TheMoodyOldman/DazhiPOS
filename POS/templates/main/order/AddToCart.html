@@ -51,7 +51,8 @@
             <form method="post" action="">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <input type="submit" class="btn btn-primary" value="確認">
+                <input type="submit" class="btn btn-success" value="加入訂單">
+                <a class="btn btn-primary" href="{% url 'cate'%}" role="button">取消下單</a>
             </form>
             </div>
         </div>
